@@ -88,11 +88,7 @@ const Column = ({y, x, col}) => {
       className={`${game.display[y][x].active ? `show ${colors[game.display[y][x].adjacent + 1]}` : 'hidden'}`}
       onClick={handleClick}
     >
-      {
-        game.display[y][x].isBomb ?
-            "*"
-          : game.display[y][x].adjacent
-      }
+      {game.display[y][x].adjacent}
     </button>
   )
 }
