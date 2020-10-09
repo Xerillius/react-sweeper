@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.scss';
 
+import Header from './components/Header'
+import Controls from './components/Controls'
 import GameBoard from './components/GameBoard'
+import Instructions from './components/Instructions'
 import {Tile} from './components/Tile'
 
 import {GameContext} from './GameContext'
@@ -16,7 +19,8 @@ function App() {
     display: ["unset"],
     moves: 0,
     activeCount: 0,
-    dead: false
+    dead: false,
+    flagging: false
   }
 
   const [game, setGame] = useState(initialState)
@@ -61,7 +65,13 @@ function App() {
   return (
     <GameContext.Provider value={{game, setGame}} >
       <div className="App">
-        <GameBoard />
+        <Header />
+        <div className="mid">
+          <Controls />
+          <GameBoard />
+          <Instructions />
+        </div>
+        {/* Footer */}
       </div>
     </GameContext.Provider>
   );

@@ -1,10 +1,8 @@
 import React, {useState, useContext, useEffect} from 'react'
 import {GameContext} from '../GameContext'
 
-const Column = ({y, x, col}) => {
+const Column = ({y, x}) => {
   const {game, setGame} = useContext(GameContext)
-
-  const colors = ['bomb', 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight']
 
   // List of neighbors for easy updating
   const neighbors = [
@@ -37,6 +35,7 @@ const Column = ({y, x, col}) => {
           let adj = checkAdjacentForBombs(nY,nX)
           tempBoard[nY][nX].setAdjacent(adj)
           tempBoard[nY][nX].setActive()
+          tempBoard[nY][nX].setClassName('show',adj+1)
           if(adj === 0){
             repeat.push([nY,nX])
           }
@@ -49,43 +48,55 @@ const Column = ({y, x, col}) => {
     return tempBoard
   }
 
-  const handleClick = () => {
+  const handleClick = (e) => {
     if(!game.dead){
       // Get temp board for updating game state
       let tempBoard = game.display
       let activeCount = game.activeCount
-      if(!game.display[y][x].isBomb){
-        // Set this cell as active
-        tempBoard[y][x].setActive()
-        activeCount += 1
-        // Get the number of adjacent bombs
-        let adj = checkAdjacentForBombs(y,x)
-        // Set adj
-        tempBoard[y][x].setAdjacent(adj)
-        // If adj is 0, reveal all neighbors
-        if(adj === 0){
-          tempBoard = revealNeighbors(y,x,tempBoard)
-        }
-        // Update game board
-        setGame({...game, display: tempBoard, activeCount: activeCount})
-      }else{
-        // Reveal all bombs because you're dead
-        for(let row = 0; row < game.yDim; row++){
-          for(let col = 0; col < game.xDim; col++){
-            if(tempBoard[row][col].isBomb){
-              tempBoard[row][col].setActive()
+      if(!game.flagging && !tempBoard[y][x].flagged){
+        if(!game.display[y][x].isBomb) {
+          // Set this cell as active
+          tempBoard[y][x].setActive()
+          activeCount += 1
+          // Get the number of adjacent bombs
+          let adj = checkAdjacentForBombs(y,x)
+          // Set adj
+          tempBoard[y][x].setAdjacent(adj)
+          tempBoard[y][x].setClassName('show',adj+1)
+          // If adj is 0, reveal all neighbors
+          if(adj === 0){
+            tempBoard = revealNeighbors(y,x,tempBoard)
+          }
+          // Update game board
+          setGame({...game, display: tempBoard})
+        } else {
+          // Reveal all bombs because you're dead
+          for(let row = 0; row < game.yDim; row++){
+            for(let col = 0; col < game.xDim; col++){
+              if(tempBoard[row][col].isBomb){
+                tempBoard[row][col].setActive()
+                tempBoard[row][col].setClassName('show',0)
+              }
             }
           }
+          console.log("You Lose!")
+          setGame({...game, dead: true, display: tempBoard})
         }
-        console.log("You Lose!")
-        setGame({...game, dead: true, display: tempBoard})
+      } else {
+        if(tempBoard[y][x].flagged){
+          tempBoard[y][x].setClassName('hidden')
+        } else {
+          tempBoard[y][x].setClassName('flagged')
+        }
+        tempBoard[y][x].toggleFlagged()
+        setGame({...game, display: tempBoard})
       }
     }
   }
 
   return(
     <button
-      className={`${game.display[y][x].active ? `show ${colors[game.display[y][x].adjacent + 1]}` : 'hidden'}`}
+      className={`${game.display[y][x].className}`}
       onClick={handleClick}
     >
       {game.display[y][x].adjacent}

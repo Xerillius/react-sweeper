@@ -1,9 +1,10 @@
 import React, { useContext } from 'react'
 import Row from './Row'
 import {GameContext} from '../GameContext'
+import Controls from './Controls'
 
 const GameBoard = () => {
-  const {game} = useContext(GameContext)
+  const {game, setGame} = useContext(GameContext)
 
   return(
     <div className="GameBoard">
