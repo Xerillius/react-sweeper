@@ -35,7 +35,6 @@ const Column = ({y, x}) => {
           let adj = checkAdjacentForBombs(nY,nX)
           tempBoard[nY][nX].setAdjacent(adj)
           tempBoard[nY][nX].setActive()
-          tempBoard[nY][nX].setClassName('show',adj+1)
           if(adj === 0){
             repeat.push([nY,nX])
           }
@@ -53,54 +52,58 @@ const Column = ({y, x}) => {
       // Get temp board for updating game state
       let tempBoard = game.display
       let activeCount = game.activeCount
-      if(!game.flagging && !tempBoard[y][x].flagged){
+      if(game.flagging){
+        tempBoard[y][x].toggleFlagged()
+        setGame({...game, display: tempBoard})
+      } else {
         if(!game.display[y][x].isBomb) {
-          // Set this cell as active
-          tempBoard[y][x].setActive()
-          activeCount += 1
-          // Get the number of adjacent bombs
-          let adj = checkAdjacentForBombs(y,x)
-          // Set adj
-          tempBoard[y][x].setAdjacent(adj)
-          tempBoard[y][x].setClassName('show',adj+1)
-          // If adj is 0, reveal all neighbors
-          if(adj === 0){
-            tempBoard = revealNeighbors(y,x,tempBoard)
+          if(!game.display[y][x].flagged) {
+            // Set this cell as active
+            tempBoard[y][x].setActive()
+            activeCount += 1
+            // Get the number of adjacent bombs
+            let adj = checkAdjacentForBombs(y,x)
+            // Set adj
+            tempBoard[y][x].setAdjacent(adj)
+            // If adj is 0, reveal all neighbors
+            if(adj === 0){
+              tempBoard = revealNeighbors(y,x,tempBoard)
+            }
+            // Update game board
+            setGame({...game, display: tempBoard})
           }
-          // Update game board
-          setGame({...game, display: tempBoard})
         } else {
           // Reveal all bombs because you're dead
           for(let row = 0; row < game.yDim; row++){
             for(let col = 0; col < game.xDim; col++){
               if(tempBoard[row][col].isBomb){
                 tempBoard[row][col].setActive()
-                tempBoard[row][col].setClassName('show',0)
+                tempBoard[row][col].setAdjacent('bomb')
               }
             }
           }
           console.log("You Lose!")
           setGame({...game, dead: true, display: tempBoard})
         }
-      } else {
-        if(tempBoard[y][x].flagged){
-          tempBoard[y][x].setClassName('hidden')
-        } else {
-          tempBoard[y][x].setClassName('flagged')
-        }
-        tempBoard[y][x].toggleFlagged()
-        setGame({...game, display: tempBoard})
       }
     }
   }
 
   return(
-    <button
-      className={`${game.display[y][x].className}`}
-      onClick={handleClick}
-    >
-      {game.display[y][x].adjacent}
-    </button>
+    <>
+      {
+        game.display[y][x].flagged ?
+            <img 
+              src={game.display[y][x].images['flag']}
+              onClick={handleClick}
+            />
+          : 
+          <img 
+          src={game.display[y][x].images[String(game.display[y][x].adjacent)]}
+          onClick={handleClick}
+        />
+      }
+    </>
   )
 }
 

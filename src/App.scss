@@ -51,11 +51,8 @@ body {
   height: 40px;
 }
 
-button {
-  box-sizing: border-box;
-  height: 40px;
-  width: 40px;
-  border: 1px solid #222222;
+img {
+  border: 1px solid black;
 }
 
 .hidden {
@@ -102,33 +99,62 @@ button {
   height: 100%;
 }
 
-.header {
-  height: 100px;
-  color: white;
-  background-color: black;
-}
-
-.mid {
+.main {
+  margin-top: 35px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
 }
 
-.controls {
+.sidebarWrap {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  margin: 0 auto;
+}
+
+.sidebar {
   display: flex;
   flex-direction: column;
   background-color: #222;
   padding: 5px;
   border: 1px solid #888;
-  color: white;
+  color: $warning;
   margin: 0 auto;
-  width: 20%;
-  height: 400px;
+  margin-bottom: 10px;
+  width: 100%;
   section {
-    border-top: 0.5px solid #888;
-    border-bottom: 0.5px solid #888;
-    padding: 5px;
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    div {
+      display: flex;
+      flex-direction: row;
+    }
+    .tile_instruction {
+      width: 60%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    button {
+      margin: 0 auto;
+      width: 50px;
+      background-color: #222;
+      border: 1px solid #888;
+      color: $warning;
+    }
+  }
+  hr {
+    width: 100%;
+    color: #888;
   }
 }
 
@@ -192,10 +218,6 @@ button {
 
 input:checked + .slider {
   background-color: $warning;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px green;
 }
 
 input:checked + .slider:before {

@@ -1,32 +1,69 @@
 import React, { useContext } from 'react'
 import {GameContext} from '../GameContext'
 
-const Controls = () => {
+const Controls = (props) => {
   const {game, setGame} = useContext(GameContext)
   const toggleFlag = () => {
     setGame({...game, flagging: !game.flagging})
   }
 
+  const handleClick = () => {
+    setGame({...game, display: ['unset']})
+  }
+
+  const setDim = (control, value) => {
+    control === 'h' ?
+        setGame({...game, yDim: value, display: ['unset']})
+      : setGame({...game, xDim: value, display: ['unset']})
+  }
+
+  const changeMines = (mines) => {
+    setGame({...game, totalMines: mines, display: ['unset']})
+  }
+
   return (
-    <div className="controls">
-      <h1>Controls go here</h1>
+    <div className="sidebar">
+      <h2>Game Controls</h2>
+      <hr />
       <section>
-        <div className="flag-con">
-          Flagging
-          <label className="switch">
-            <input type="checkbox"
-              onChange={toggleFlag}
-            />
-            <span className="slider round" />
-          </label>
+        Flagging
+        <label className="switch">
+          <input type="checkbox"
+            onChange={toggleFlag}
+          />
+          <span className="slider round" />
+        </label>
+      </section>
+      <section>
+        Width ({game.xDim})
+        <div>
+          <button onClick={(e) => setDim('w',10)}>10</button>
+          <button onClick={(e) => setDim('w',15)}>15</button>
+          <button onClick={(e) => setDim('w',20)}>20</button>
         </div>
       </section>
       <section>
-        <h3>Set Width #Tiles</h3>
+        Height ({game.yDim})
+        <div>
+          <button onClick={(e) => setDim('h',10)}>10</button>
+          <button onClick={(e) => setDim('h',15)}>15</button>
+          <button onClick={(e) => setDim('h',20)}>20</button>
+        </div>
       </section>
       <section>
-        <h3>Set Height #Tiles</h3>
+        Mines ({game.totalMines})
+        <div>
+          <button onClick={(e) => changeMines(10)}>10</button>
+          <button onClick={(e) => changeMines(20)}>20</button>
+          <button onClick={(e) => changeMines(30)}>30</button>
+          <button onClick={(e) => changeMines(40)}>40</button>
+        </div>
       </section>
+      <button
+        onClick={handleClick}
+      >
+        Reset Board
+      </button>
     </div>
   )
 }

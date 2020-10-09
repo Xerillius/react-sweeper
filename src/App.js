@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.scss';
 
-import Header from './components/Header'
+import GameStats from './components/GameStats'
 import Controls from './components/Controls'
 import GameBoard from './components/GameBoard'
 import Instructions from './components/Instructions'
@@ -12,18 +12,36 @@ import {GameContext} from './GameContext'
 function App() {
   // Initial state of game if no other options chosen
   const initialState = {
-    play: false,
     xDim: 20,
     yDim: 20,
     totalMines: 40,
     display: ["unset"],
-    moves: 0,
-    activeCount: 0,
     dead: false,
+    win: false,
     flagging: false
   }
 
   const [game, setGame] = useState(initialState)
+  const [stats, setStats] = useState('');
+
+  const getMoves = () => {
+    let activeCount = 0;
+    let flagCount = 0;
+    if(game.display[0] !== 'unset'){
+      for(let row = 0; row < game.yDim; row++){
+        for(let col = 0; col < game.xDim; col++){
+          if(game.display[row][col].active){
+            activeCount++
+          }
+          if(game.display[row][col].flagged){
+            flagCount++
+          }
+        }
+      }
+    }
+    let remaining = (game.yDim * game.xDim) - activeCount
+    return [remaining, flagCount]
+  }
 
   const initGame = () => {
     // Init the game board
@@ -62,14 +80,33 @@ function App() {
     setGame({...game, display: initGame()})
   }, [])
 
+  useEffect(() => {
+    if(game.display[0] === 'unset'){
+      setGame({...game, dead: false, display: initGame()})
+    } else {
+      const result = getMoves()
+      let remaining = result[0]
+      let flaggedCount = result[1]
+      if(remaining == game.totalMines){
+        setGame({...game, win: true})
+      }
+      setStats({remaining: remaining, flaggedCount: flaggedCount})
+    }
+    
+  }, [game])
+
   return (
-    <GameContext.Provider value={{game, setGame}} >
+    <GameContext.Provider value={{game, setGame, stats}} >
       <div className="App">
-        <Header />
-        <div className="mid">
-          <Controls />
+        <div className="main">
+          <div className='sidebarWrap'>
+            <Controls reset={initGame} />
+          </div>
           <GameBoard />
-          <Instructions />
+          <div className='sidebarWrap'>
+            <GameStats />
+            <Instructions />
+          </div>
         </div>
         {/* Footer */}
       </div>
