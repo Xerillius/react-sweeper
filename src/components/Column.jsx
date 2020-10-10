@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useContext} from 'react'
 import {GameContext} from '../GameContext'
 
 const Column = ({y, x}) => {
@@ -56,8 +56,8 @@ const Column = ({y, x}) => {
         tempBoard[y][x].toggleFlagged()
         setGame({...game, display: tempBoard})
       } else {
-        if(!game.display[y][x].isBomb) {
-          if(!game.display[y][x].flagged) {
+        if(!game.display[y][x].flagged){
+          if(!game.display[y][x].isBomb) {
             // Set this cell as active
             tempBoard[y][x].setActive()
             activeCount += 1
@@ -71,19 +71,22 @@ const Column = ({y, x}) => {
             }
             // Update game board
             setGame({...game, display: tempBoard})
-          }
-        } else {
-          // Reveal all bombs because you're dead
-          for(let row = 0; row < game.yDim; row++){
-            for(let col = 0; col < game.xDim; col++){
-              if(tempBoard[row][col].isBomb){
-                tempBoard[row][col].setActive()
-                tempBoard[row][col].setAdjacent('bomb')
+          } else {
+            // Reveal all bombs because you're dead
+            for(let row = 0; row < game.yDim; row++){
+              for(let col = 0; col < game.xDim; col++){
+                if(tempBoard[row][col].isBomb){
+                  tempBoard[row][col].setActive()
+                  tempBoard[row][col].setAdjacent('bomb')
+                  if(tempBoard[row][col].flagged){
+                    tempBoard[row][col].toggleFlagged()
+                  }
+                }
               }
             }
+            console.log("You Lose!")
+            setGame({...game, dead: true, display: tempBoard})
           }
-          console.log("You Lose!")
-          setGame({...game, dead: true, display: tempBoard})
         }
       }
     }

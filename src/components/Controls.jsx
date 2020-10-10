@@ -8,7 +8,7 @@ const Controls = (props) => {
   }
 
   const handleClick = () => {
-    setGame({...game, display: ['unset']})
+    setGame({...game, totalMines: 10, win: false, display: ['unset']})
   }
 
   const setDim = (control, value) => {
@@ -54,9 +54,9 @@ const Controls = (props) => {
         Mines ({game.totalMines})
         <div>
           <button onClick={(e) => changeMines(10)}>10</button>
-          <button onClick={(e) => changeMines(20)}>20</button>
-          <button onClick={(e) => changeMines(30)}>30</button>
-          <button onClick={(e) => changeMines(40)}>40</button>
+          <button onClick={(e) => changeMines(25)}>25</button>
+          <button onClick={(e) => changeMines(50)}>50</button>
+          <button onClick={(e) => changeMines(75)}>75</button>
         </div>
       </section>
       <button

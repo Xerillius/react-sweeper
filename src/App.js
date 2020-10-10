@@ -88,7 +88,7 @@ function App() {
       let remaining = result[0]
       let flaggedCount = result[1]
       if(remaining == game.totalMines){
-        setGame({...game, win: true})
+        setGame({...game, totalMines: 0, win: true})
       }
       setStats({remaining: remaining, flaggedCount: flaggedCount})
     }
