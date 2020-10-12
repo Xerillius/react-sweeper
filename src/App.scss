@@ -151,6 +151,11 @@ img {
       border: 1px solid #888;
       color: $warning;
     }
+    button.active {
+      background-color: $warning;
+      color: #222;
+      border: 1px solid #222;
+    }
   }
   hr {
     width: 100%;
@@ -158,18 +163,13 @@ img {
   }
 }
 
-.flag-con {
-  margin: 0 auto;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+.howto {
+  text-align: left;
 }
 
-.gameBoard {
-  width: 50%;
-  margin: auto;
+.GameBoard {
+  width: 840px;
+  margin: 0 auto;
 }
 
 .instructions {

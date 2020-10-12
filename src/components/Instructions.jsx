@@ -19,8 +19,6 @@ const Instructions = () => {
         <span>Flagging</span>
         <span>Flip the switch to flag potential mines</span>
       </section>
-      <hr />
-      <h3>How to use controls</h3>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import './App.scss';
 
 import GameStats from './components/GameStats'
 import Controls from './components/Controls'
+import ControlsHowTo from './components/ControlsHowTo'
 import GameBoard from './components/GameBoard'
 import Instructions from './components/Instructions'
 import {Tile} from './components/Tile'
@@ -12,9 +13,9 @@ import {GameContext} from './GameContext'
 function App() {
   // Initial state of game if no other options chosen
   const initialState = {
-    xDim: 20,
-    yDim: 20,
-    totalMines: 40,
+    xDim: 10,
+    yDim: 10,
+    totalMines: 10,
     display: ["unset"],
     dead: false,
     win: false,
@@ -100,12 +101,13 @@ function App() {
       <div className="App">
         <div className="main">
           <div className='sidebarWrap'>
+            <GameStats />
             <Controls reset={initGame} />
           </div>
           <GameBoard />
           <div className='sidebarWrap'>
-            <GameStats />
             <Instructions />
+            <ControlsHowTo />
           </div>
         </div>
         {/* Footer */}

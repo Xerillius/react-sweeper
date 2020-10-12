@@ -18,7 +18,9 @@ export class Tile {
     this.adjacent = -1
     this.flagged = false
     this.className = 'hidden'
-    this.colors = ['bomb', 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight']
+    this.colors = [
+      'bomb', 'zero', 'one', 'two', 'three',
+      'four', 'five', 'six', 'seven', 'eight']
     this.images = {
       '-1': Hidden,
       '0': Zero,
