@@ -79,6 +79,7 @@ const Controls = (props) => {
       </section>
       <hr />
       <button
+        className="reset"
         onClick={handleClick}
       >
         Reset Board
